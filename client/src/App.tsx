@@ -27,9 +27,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        {token ? <Home /> : <Login />}
-      </header >
+      {token ? <Home /> : <Login />}
     </div >
   );
 }
