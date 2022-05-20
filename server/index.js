@@ -2,6 +2,7 @@ import express from 'express';
 import { spotifyAuthUrl, stateKey } from './utils/spotifyAuth.js';
 import { generateRandomString } from './utils/randomStringGenerator.js';
 import axios from 'axios';
+import cors from 'cors';
 import dotenv from "dotenv";
 import cookieParser from 'cookie-parser';
 
@@ -13,6 +14,9 @@ const CLIENT_URL = process.env.CLIENT_URL;
 
 const app = express();
 app.use(cookieParser())
+app.use(cors({
+    origin: CLIENT_URL,
+}))
 
 const port = 8888;
 
