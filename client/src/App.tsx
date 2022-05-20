@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import './App.css';
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import Home from './components/Home';
-import { selectCurrentAuthToken, setCredentials } from './features/auth/authSlice';
+import { selectCurrentAuthToken, tokenReceived } from './features/auth/authSlice';
 import Login from './features/auth/Login';
 
 function App() {
@@ -15,11 +15,12 @@ function App() {
     const accessToken = urlParams.get('access_token');
     return accessToken
   }
+
   useEffect(() => {
     if (token) return;
     const accessToken = getAccessTokenFromUrl()
     if (accessToken) {
-      dispatch(setCredentials(accessToken))
+      dispatch(tokenReceived(accessToken))
       window.location.href = '/';
     }
   }, [dispatch]);
