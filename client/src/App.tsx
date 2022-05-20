@@ -1,17 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import { useEffect } from "react";
 import './App.css';
-import Login from './features/login/Login';
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import Home from './components/Home';
+import { selectCurrentAuthToken, setCredentials } from './features/auth/authSlice';
+import Login from './features/auth/Login';
 
 function App() {
+  const token = useAppSelector(selectCurrentAuthToken)
+  const dispatch = useAppDispatch()
+
+  const getAccessTokenFromUrl = () => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const accessToken = urlParams.get('access_token');
+    return accessToken
+  }
+  useEffect(() => {
+    if (token) return;
+    const accessToken = getAccessTokenFromUrl()
+    if (accessToken) {
+      dispatch(setCredentials(accessToken))
+      window.location.href = '/';
+    }
+  }, [dispatch]);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Login />
-      </header>
-    </div>
+        {token ? <Home /> : <Login />}
+      </header >
+    </div >
   );
 }
 

@@ -56,10 +56,11 @@ app.get('/callback', async (req, res) => {
         try {
             const response = await axios.post('https://accounts.spotify.com/api/token', data, config);
             if (response.status === 200) {
-                const { access_token, refresh_token } = response.data;
+                const { access_token, refresh_token, expires_in } = response.data;
                 const queryParams = new URLSearchParams({
                     access_token,
                     refresh_token,
+                    expires_in
                 });
                 res.redirect(`${CLIENT_URL}?${queryParams}`);
 
