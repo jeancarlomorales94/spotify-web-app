@@ -15,7 +15,7 @@ const stateKey = 'spotify_auth_state';
 const spotifyAuthUrl = (state) => 'https://accounts.spotify.com/authorize?' + new URLSearchParams({
     response_type: 'code',
     client_id: process.env.CLIENT_ID,
-    redirect_uri: process.env.REDIRECT_URI,
+    redirect_uri: process.env.REDIRECT_URL,
     show_dialog: true,
     state,
     scope: scopes.join(' ')
