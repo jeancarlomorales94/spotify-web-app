@@ -1,17 +1,19 @@
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../app/hooks";
-import { loggedOut } from "../features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { loggedOut, tokenRefreshed, selectRefreshToken } from "../features/auth/authSlice";
 
 const Home = () => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate()
-
+    const refreshToken = useAppSelector(selectRefreshToken);
     return (
         <>
             <div>Home</div>
             <button onClick={() => {
                 dispatch(loggedOut());
             }}>Log Out</button>
+            <button onClick={() => {
+                dispatch(tokenRefreshed(refreshToken))
+            }}>Refresh Token</button>
         </>
     )
 }
