@@ -62,7 +62,7 @@ app.get('/callback', async (req, res) => {
                     refresh_token,
                     expires_in
                 });
-                res.redirect(`${CLIENT_URL}?${queryParams}`);
+                res.redirect(`${CLIENT_URL}/callback?${queryParams}`);
 
             } else {
                 res.redirect('/' + new URLSearchParams({

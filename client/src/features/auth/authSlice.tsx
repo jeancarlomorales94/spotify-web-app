@@ -1,32 +1,41 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
-
-interface AuthState {
-    token: string | null
-}
+import { AuthState } from "./types"
 
 const initialState: AuthState = {
-    token: localStorage.getItem('spotify-web-player.spotify_access_token') || null,
+    accessToken: localStorage.getItem('spotify-web-player.spotify_access_token'),
+    refreshToken: localStorage.getItem('spotify-web-player.spotify_refresh_token'),
+    expiresIn: Number(localStorage.getItem('spotify-web-player.spotify_expires_in')),
+    timestamp: Number(localStorage.getItem('spotify-web-player.spotify_timestamp'))
 }
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        tokenReceived: (state, action: PayloadAction<string>) => {
-            state.token = action.payload;
-            localStorage.setItem('spotify-web-player.spotify_access_token', state.token)
+        loggedIn: (_, action: PayloadAction<AuthState>) => {
+            localStorage.setItem('spotify-web-player.spotify_access_token', action.payload.accessToken!)
+            localStorage.setItem('spotify-web-player.spotify_refresh_token', action.payload.refreshToken!)
+            localStorage.setItem('spotify-web-player.spotify_expires_in', String(action.payload.expiresIn!))
+            localStorage.setItem('spotify-web-player.spotify_timestamp', String(action.payload.timestamp!))
+            return action.payload;
         },
         loggedOut: (state) => {
-            state.token = null;
-            localStorage.removeItem('spotify-web-player.spotify_access_token');
+            // state.authToken = '';
+            // state.refreshToken = '';
+            // state.expiresIn = 0;
+            // localStorage.removeItem('spotify-web-player.spotify_access_token');
+            // localStorage.removeItem('spotify-web-player.spotify_refresh_token');
+            // localStorage.removeItem('spotify-web-player.spotify_expires_in');
         }
-
     }
 })
 
 export default authSlice.reducer
 
-export const { tokenReceived, loggedOut } = authSlice.actions
+export const { loggedIn, loggedOut } = authSlice.actions
 
-export const selectCurrentAuthToken = (state: RootState) => state.auth.token
+export const selectAreCredentialsValid = (state: RootState) => {
+    const millisecondsElapsed = Date.now() - state.auth.timestamp;
+    return (millisecondsElapsed / 1000) <= state.auth.expiresIn && state.auth.accessToken;
+}

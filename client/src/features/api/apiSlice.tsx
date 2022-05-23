@@ -4,10 +4,8 @@ import { RootState } from '../../app/store'
 const baseQuery = fetchBaseQuery({
     baseUrl: 'https://api.spotify.com/v1/',
     prepareHeaders: (headers, { getState }) => {
-        const token = (getState() as RootState).auth.token
-        if (token) {
-            headers.set('authorization', `Bearer ${token}`)
-        }
+        const accessToken = (getState() as RootState).auth.accessToken
+        headers.set('authorization', `Bearer ${accessToken}`)
         return headers
     },
 })
