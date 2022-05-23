@@ -20,13 +20,11 @@ const authSlice = createSlice({
             localStorage.setItem('spotify-web-player.spotify_timestamp', String(action.payload.timestamp!))
             return action.payload;
         },
-        loggedOut: (state) => {
-            // state.authToken = '';
-            // state.refreshToken = '';
-            // state.expiresIn = 0;
-            // localStorage.removeItem('spotify-web-player.spotify_access_token');
-            // localStorage.removeItem('spotify-web-player.spotify_refresh_token');
-            // localStorage.removeItem('spotify-web-player.spotify_expires_in');
+        loggedOut: () => {
+            localStorage.removeItem('spotify-web-player.spotify_access_token');
+            localStorage.removeItem('spotify-web-player.spotify_refresh_token');
+            localStorage.removeItem('spotify-web-player.spotify_expires_in');
+            return { ...initialState };
         }
     }
 })
@@ -37,5 +35,5 @@ export const { loggedIn, loggedOut } = authSlice.actions
 
 export const selectAreCredentialsValid = (state: RootState) => {
     const millisecondsElapsed = Date.now() - state.auth.timestamp;
-    return (millisecondsElapsed / 1000) <= state.auth.expiresIn && state.auth.accessToken;
+    return state.auth.accessToken && (millisecondsElapsed / 1000) <= state.auth.expiresIn;
 }
