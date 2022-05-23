@@ -11,9 +11,8 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
     useEffect(() => {
         if (tokenExpired && refreshToken) {
             dispatch(tokenRefreshed(refreshToken));
-            console.log('tokenExpired', tokenExpired, refreshToken);
         }
-    }, [dispatch])
+    }, [dispatch, tokenExpired, refreshToken]);
 
     return accessToken ? children : <Navigate to="/login" />;
 }
