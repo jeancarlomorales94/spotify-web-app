@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom"
+import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
     return (
@@ -6,7 +6,7 @@ const Layout = () => {
             <h1>Spotify Web Player</h1>
             <Outlet />
         </>
-    )
-}
+    );
+};
 
-export default Layout
+export default Layout;

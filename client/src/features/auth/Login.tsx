@@ -6,7 +6,7 @@ const Login = () => {
                 Log in to Spotify
             </a>
         </>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;

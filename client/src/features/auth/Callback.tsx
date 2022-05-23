@@ -1,12 +1,12 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../app/hooks";
-import { loggedIn } from "./authSlice";
-import { AuthState } from "./types";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../app/hooks';
+import { loggedIn } from './authSlice';
+import { AuthState } from './types';
 
 const Callback = () => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     useEffect(() => {
         const queryString = window.location.search;
@@ -20,16 +20,14 @@ const Callback = () => {
                 accessToken,
                 refreshToken,
                 expiresIn: Number(expiresIn),
-                timestamp: Date.now()
-            }
+                timestamp: Date.now(),
+            };
             dispatch(loggedIn(authState));
-            navigate('/')
+            navigate('/');
         }
     }, [dispatch, navigate]);
 
-    return (
-        <div>Callback</div>
-    )
-}
+    return <div>Callback</div>;
+};
 
-export default Callback
+export default Callback;
